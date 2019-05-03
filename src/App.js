@@ -3,6 +3,8 @@ import React, {
   Fragment
 } from 'react'
 
+import './style.css'
+
 class App extends Component {
   constructor(props) {
     super(props)

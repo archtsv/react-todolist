@@ -2,6 +2,7 @@ import React, {
   Component,
   Fragment
 } from 'react'
+import axios from 'axios'
 import TodoItem from './TodoItem'
 import './style.css'
 
@@ -73,6 +74,21 @@ class TodoList extends Component {
         </ul>
       </Fragment>
     )
+  }
+
+  componentDidMount() {
+    axios.get('/api/todolist')
+      .then((res) => {
+        console.log(res.data)
+        this.setState(() => {
+          return {
+            list: [...res.data]
+          }
+        })
+      })
+      .catch((err) => {
+        console.log('error ', err)
+      })
   }
 }
 

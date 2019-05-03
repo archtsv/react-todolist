@@ -64,3 +64,55 @@ Diff 即 difference
 - 同级比对
 - 设置唯一key值
 
+## 生命周期函数
+**指在某一个时刻会自动执行的函数**
+
+### Initialization
+setup props and state 
+`react` 初始化在 `constructor` 中进行
+
+### Mounting
+componentWillMount -> render -> componentDidMount
+
+- componentWillMount
+    + 在组件即将被挂载到页面的时刻自动执行
+
+- render
+    + 将组件挂载到页面
+
+- componentDidMount
+    + 组件挂载到页面之后执行
+
+### Updation
+props 或者 state 更新
+
+#### props
+componentWillReceiveProps -> shouldComponentUpdate -> componentWillUpdate -> render -> componentDidUpdate
+
+#### state
+ shouldComponentUpdate -> componentWillUpdate -> render -> componentDidUpdate
+
+- componentWillReceiveProps
+    + 当一个组件从父组件接受了参数，只要父组件的render函数执行了，子组件的这个生命周期函数就会被执行；如果这个组件第一次存在于父组件中，不会被执行；如果这个组件之前已经存在于父组件中，才会被执行
+- shouldComponentUpdate
+    + 组件被更新之前自动执行
+- componentWillUpdate
+    + 组件被更新之前，它会自动执行，但在 shouldComponentUpdate 之后执行，并且只有当 shouldComponentUpdate 为 true 时执行，值为 false 时不执行
+- componentDidUpdate
+    + 组件更新完成之后执行
+
+### Unmounting
+componentWillUnmount
+当组件被移除的时候会执行
+
+## react提升性能的点
+1. 将改变作用域(`bind(this)`)的方法放在 `constructor` 中进行
+2. `setState` 内置提升性能机制，是异步函数，可以把多次数据的改变合并成一次，将低虚拟DOM的比对频率
+3. 虚拟DOM，同层比对，key值的存在用于加快虚拟DOM的比对速度，提升性能
+4. `shouldComponentUpate` 只有在必要的条件下重新渲染组件，提升性能
+
+## 获取数据
+1. `react` `ajax`请求获取数据通常放在`componentDidUpate`中进行，不宜放在`render`函数中，因为每次数据变化都会引起`render`函数的执行，会引起`render`函数的无限循环
+2. `componentWillMount` 和 `componentDidMount` 都只会在初次渲染时执行一次，但是`componentWillMount`在`react-native`和服务端渲染时会产生冲突，所以可以约定 `ajax` 获取数据放在 `componentDidMount` 中进行
+3. 放在 `constructor` 中进行也行
+

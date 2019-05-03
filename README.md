@@ -64,3 +64,43 @@ Diff 即 difference
 - 同级比对
 - 设置唯一key值
 
+## 生命周期函数
+**指在某一个时刻会自动执行的函数**
+
+### Initialization
+setup props and state 
+`react` 初始化在 `constructor` 中进行
+
+### Mounting
+componentWillMount -> render -> componentDidMount
+
+- componentWillMount
+    + 在组件即将被挂载到页面的时刻自动执行
+
+- render
+    + 将组件挂载到页面
+
+- componentDidMount
+    + 组件挂载到页面之后执行
+
+### Updation
+props 或者 state 更新
+
+#### props
+componentWillReceiveProps -> shouldComponentUpdate -> componentWillUpdate -> render -> componentDidUpdate
+
+#### state
+ shouldComponentUpdate -> componentWillUpdate -> render -> componentDidUpdate
+
+- componentWillReceiveProps
+    + 当一个组件从父组件接受了参数，只要父组件的render函数执行了，子组件的这个生命周期函数就会被执行；如果这个组件第一次存在于父组件中，不会被执行；如果这个组件之前已经存在于父组件中，才会被执行
+- shouldComponentUpdate
+    + 组件被更新之前自动执行
+- componentWillUpdate
+    + 组件被更新之前，它会自动执行，但在 shouldComponentUpdate 之后执行，并且只有当 shouldComponentUpdate 为 true 时执行，值为 false 时不执行
+- componentDidUpdate
+    + 组件更新完成之后执行
+
+### Unmounting
+componentWillUnmount
+当组件被移除的时候会执行

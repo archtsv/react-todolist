@@ -36,10 +36,21 @@ class TodoList extends Component {
     //   list: [...this.state.list, this.state.inputValue],
     //   inputValue: ''
     // })
+    // this.setState((state) => ({
+    //   list: [...state.list, state.inputValue],
+    //   inputValue: ''
+    // }))
+    // setState 是异步函数，所以下面console.log内容在 setState之前立即执行，因此打印出的length总比实际的少一个
+    // console.log(this.ul.querySelectorAll('li').length)
+
+    // 第二个函数是setState完成之后的回调，如此打印出的长度就正确了
     this.setState((state) => ({
       list: [...state.list, state.inputValue],
       inputValue: ''
-    }))
+    }), () => {
+      console.log(this.ul.querySelectorAll('li').length)
+    })
+
   }
 
   handleItemDelete(index) {
@@ -57,6 +68,7 @@ class TodoList extends Component {
         list
       }
     })
+
   }
 
   getTodoItem() {
@@ -71,6 +83,10 @@ class TodoList extends Component {
 
       )
     })
+  }
+
+  componentWillMount() {
+    console.log('component will mount')
   }
 
   render() {
@@ -89,13 +105,35 @@ class TodoList extends Component {
           />
           <button onClick={this.handleBtnClick}>提交</button>
         </div>
-        <ul>
+        <ul ref={ul => {this.ul = ul}}>
           { this.getTodoItem() }  
         </ul>
         <Test content={this.state.inputValue} />
       </Fragment>
     )
   }
+
+  componentDidMount() {
+    console.log('component did mount')
+  }
+
+  // 组件被更新之前，他会被自动执行
+  shouldComponentUpdate() {
+    console.log('should component update')
+    return true
+  }
+
+  // 组件被更新之前，它会自动执行，但在 shouldComponentUpdate 之后执行
+  // 并且只有当 shouldComponentUpdate 为 true 时执行，值为 false 时不执行
+  componentWillUpdate() {
+    console.log('component will update')
+  }
+
+  // 组件更新之后执行
+  componentDidUpdate() {
+    console.log('component did update')
+  }
+
 }
 
 export default TodoList

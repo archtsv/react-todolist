@@ -58,7 +58,8 @@ class TodoList extends Component {
 
   render() {
     return (
-      <Fragment>        <div>
+      <Fragment>        
+        <div>
           <label htmlFor="insertArea">输入内容</label>
           <input type="text"
             id="insertArea"

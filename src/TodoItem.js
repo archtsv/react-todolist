@@ -16,7 +16,15 @@ class TodoItem extends Component {
     deleteItem(index)
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.content !== this.props.content) {
+      return true
+    }
+    return false
+  }
+
   render() {
+    console.log('child render')
     const {
       content
     } = this.props

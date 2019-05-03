@@ -1,68 +1,66 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React TodoList
 
-## Available Scripts
+## 开发方式
+- 命令式开发
+  + 如 `jquery`，大部分代码都是在直接操作DOM
+- 声明式开发
+  + 如 `react`，面向数据编程，数据结构构建好之后，`react`会根据数据自动构建页面，节约了大量的DOM操作
 
-In the project directory, you can run:
+## 父子组件通信是单向数据流的体现
+- 父组件通过 `props` 将数据传递给子组件，子组件向父组件传值通过调用父组件传过来的方法（此时父组件的方法调用还是在父组件内发生），这样组件内的方法都是在组件内调用的，数据的改变都是在当前组件内，而不会被其他组件修改
 
-### `npm start`
+## state, props, render 之间的关系
+当组件的 `state` 或者 `props` 发生改变的时候，`render` 函数就会重新执行,当父组件的 `render` 函数重新执行时，子组件的 `render` 也会重新执行，可以从两个方面理解：
+- 一是因为当父组件 `render` 函数重新执行，子组件也会被重新渲染，子组件的 `render` 函数就会重新执行
+- 二是因为当父组件的 `state.inputValue` 发生变化，子组件的 `props.content` 也会变化，从而触发 `render` 函数
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 虚拟DOM
+### 不使用虚拟DOM
+1. state 数据
+2. JSX 模板
+3. 数据 + 模板 结合，生成真实的DOM，来显示
+4. state 发生改变
+5. 数据 + 模板 结合，生成真实的DOM，并不直接替换原始的DOM
+6. 新的DOM（DocumentFragment）和原始的DOM做对比，找差异
+7. 发现input框发生改变
+8. 只用新的DOM中的 input 元素，替换老的DOM中的 input 元素
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+**缺陷**
+性能的提升并不明显
 
-### `npm test`
+### 使用虚拟DOM
+1. state 数据
+2. JSX 模板
+3. 数据 + 模板 生成虚拟DOM（虚拟DOM就是一个js对象，用它来描述真实DOM，损耗了性能，但是此处js生成对象比用js操作dom的性能损耗要小）
+```javascript
+['div', {id: 'abc'}, ['span', {}, 'hello world']]
+```
+4. 用虚拟DOM的结构生成真实DOM
+ ```html
+<div id='abc'>
+  <span>hello world</span>
+</div>
+```
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+5. state 发生变化
+6. 生成新的虚拟DOM（与生成真实DOM相比极大的提升了性能）
+```javascript
+['div', {id: 'abc'}, ['span', {}, 'bye bye']]
+```
+7. 比较原始虚拟DOM和新的虚拟DOM的区别，找到区别是 span 中的内容（js对象的比较，与原来相比也极大的提升了性能）
+8. 直接操作DOM，改变 span 中的内容
 
-### `npm run build`
+**优点**
+1. 性能提升
+2. 它使得跨端应用得以实现 -> React Native (主要得益于虚拟DOM)
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### JSX
+JSX -> React.createElement -> 虚拟DOM（js对象）-> 真实DOM
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Diff算法
+Diff 即 difference
+当同时调用多次 `setState` 的时候，由于调用间隔的时间小，`react` 会将多次调用合并成一次，所以将 `setState` 内写成异步函数，提升性能
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- 同级比对
+- 设置唯一key值
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

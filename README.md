@@ -116,3 +116,8 @@ componentWillUnmount
 2. `componentWillMount` 和 `componentDidMount` 都只会在初次渲染时执行一次，但是`componentWillMount`在`react-native`和服务端渲染时会产生冲突，所以可以约定 `ajax` 获取数据放在 `componentDidMount` 中进行
 3. 放在 `constructor` 中进行也行
 
+## redux
+1. store是唯一的
+2. 只有store能改变store里的内容
+3. reducer是纯函数，（纯函数是指给固定的输入，就一定会有固定的输出，不会有副作用）
+

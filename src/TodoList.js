@@ -1,13 +1,12 @@
 import React, {
   Component
 } from 'react'
-
 import store from './store'
 import {
-  getTodoList,
   getInputChangeAction,
   getAddItemAction,
-  getDeleteItemAction
+  getDeleteItemAction,
+  getInitList
 } from './store/actionCreators'
 import TodoListUI from './TodoListUI'
 
@@ -39,9 +38,8 @@ class TodoList extends Component {
     //     const data = res.data
     //     const action = initListAction(data)
     //     store.dispatch(action)
-    //     console.log(res)
     //   })
-    const action = getTodoList()
+    const action = getInitList();
     store.dispatch(action)
   }
 
